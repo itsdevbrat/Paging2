@@ -27,14 +27,19 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         activityMainBinding = DataBindingUtil.setContentView(this, R.layout.activity_main);
         activityMainBinding.setLifecycleOwner(this);
+        
+        //Initializning the Recyycler Adapter
         PostsPagedListAdapter postsPagedListAdapter = new PostsPagedListAdapter(Post.postItemCallback);
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(this, RecyclerView.VERTICAL, false);
         activityMainBinding.postsRv.setLayoutManager(linearLayoutManager);
         activityMainBinding.postsRv.setAdapter(postsPagedListAdapter);
 
+        //Initializing ViewModel
         MainActivityViewModel mainActivityViewModel = new ViewModelProvider(this, new MainActivityViewModelFactory(getApplication()))
                 .get(MainActivityViewModel.class);
 
+        //Observung the paged data and as soon as the next page is fetched 
+        //we can submit that list to PagedListAdapter to show the results
         mainActivityViewModel.getPagedList().observe(this, new Observer<PagedList<Post>>() {
             @Override
             public void onChanged(PagedList<Post> posts) {
@@ -42,6 +47,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
+        //Obsering the loading state and updating the PagedListAdapter about it
         mainActivityViewModel.getLoadState().observe(this, new Observer<Integer>() {
             @Override
             public void onChanged(Integer state) {
