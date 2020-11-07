@@ -21,10 +21,14 @@ import com.example.pagingapp.model.entities.Post;
 
 public class PostsPagedListAdapter extends PagedListAdapter<Post, RecyclerView.ViewHolder> {
 
+    // Two view types 1st to show a loading spinner and the other to show a post
     private static final int TYPE_LOAD = 1;
     private static final int TYPE_POST = 2;
+    
+    //Loading state : ONGOING, FAILED, SUCCESS defined in the constants file
     private Integer state;
-
+    
+    //Diff callback for efficient handling of updates in recycler view 
     public PostsPagedListAdapter(@NonNull DiffUtil.ItemCallback<Post> diffCallback) {
         super(diffCallback);
     }
@@ -56,6 +60,9 @@ public class PostsPagedListAdapter extends PagedListAdapter<Post, RecyclerView.V
 
     @Override
     public int getItemViewType(int position) {
+    
+        //IMPORTANT: When to show a loading spinner
+        //if((we are at the last position of previous page)  &&  (the loading state is either ONGOING or FAILED))
         if (position == getItemCount()-1  && state != null && !state.equals(Constants.SUCCESS))
             return TYPE_LOAD;
         else
