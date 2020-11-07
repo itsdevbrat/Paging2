@@ -13,7 +13,10 @@ import com.example.pagingapp.network.Api;
 
 public class PostsDataSourceFactory extends DataSource.Factory<Integer, Post> {
 
+    //To perform network calls
     private Api api;
+    
+    //A livedata to hold the data source instance
     private MutableLiveData<PostsDataSource> postsDataSourceMutableLiveData;
 
     public PostsDataSourceFactory(Api api) {
@@ -21,6 +24,9 @@ public class PostsDataSourceFactory extends DataSource.Factory<Integer, Post> {
         postsDataSourceMutableLiveData = new MutableLiveData<>();
     }
 
+    //Factory method pattern implemented below
+    //Where a create method does the job of initializing the objects for client 
+    
     @NonNull
     @Override
     public DataSource<Integer, Post> create() {
@@ -35,7 +41,3 @@ public class PostsDataSourceFactory extends DataSource.Factory<Integer, Post> {
         return postsDataSourceMutableLiveData;
     }
 }
-
-
-
-
